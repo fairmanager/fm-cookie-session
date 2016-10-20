@@ -14,7 +14,7 @@
     "middleware",
     "session"
   ],
-  "repository": "expressjs/cookie-session",
+  "repository": "fairmanager/fm-cookie-session",
   "dependencies": {
     "cookies": "0.6.1",
     "debug": "~2.2.0",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "connect": "3.5.0",
     "istanbul": "0.4.5",
+    "jscs": "3.0.7",
     "mocha": "3.1.2",
     "supertest": "2.0.1"
   },

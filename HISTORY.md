@@ -1,3 +1,9 @@
+2.0.0 / 2016-10-20
+==================
+
+  * Fork from cookie-session
+  * All dependencies updated
+
 2.0.0-alpha.1 / 2015-10-11
 ==========================
 

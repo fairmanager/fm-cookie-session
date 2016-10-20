@@ -11,13 +11,13 @@
 ## Install
 
 ```bash
-$ npm install cookie-session
+$ npm install fm-cookie-session
 ```
 
 ## API
 
 ```js
-var cookieSession = require('cookie-session')
+const cookieSession = require('fm-cookie-session')
 ```
 
 ### cookieSession(options)
@@ -158,7 +158,7 @@ app.use(function (req, res, next) {
 Because the entire session object is encoded and stored in a cookie, it is
 possible to exceed the maxium cookie size limits on different browsers. The
 [RFC6265 specification](https://tools.ietf.org/html/rfc6265#section-6.1)
-reccomends that a browser **SHOULD** allow
+recommends that a browser **SHOULD** allow
 
 > At least 4096 bytes per cookie (as measured by the sum of the length of
 > the cookie's name, value, and attributes)
@@ -182,13 +182,13 @@ move to an [alternative session strategy](https://github.com/expressjs/session#c
 
 [MIT](LICENSE)
 
-[npm-image]: https://img.shields.io/npm/v/cookie-session.svg
-[npm-url]: https://npmjs.org/package/cookie-session
-[travis-image]: https://img.shields.io/travis/expressjs/cookie-session/master.svg
-[travis-url]: https://travis-ci.org/expressjs/cookie-session
-[coveralls-image]: https://img.shields.io/coveralls/expressjs/cookie-session.svg
-[coveralls-url]: https://coveralls.io/r/expressjs/cookie-session?branch=master
-[downloads-image]: https://img.shields.io/npm/dm/cookie-session.svg
-[downloads-url]: https://npmjs.org/package/cookie-session
+[npm-image]: https://img.shields.io/npm/v/fm-cookie-session.svg
+[npm-url]: https://npmjs.org/package/fm-cookie-session
+[travis-image]: https://img.shields.io/travis/fairmanager/fm-cookie-session/master.svg
+[travis-url]: https://travis-ci.org/fairmanager/fm-cookie-session
+[coveralls-image]: https://img.shields.io/coveralls/fairmanager/fm-cookie-session.svg
+[coveralls-url]: https://coveralls.io/r/fairmanager/fm-cookie-session?branch=master
+[downloads-image]: https://img.shields.io/npm/dm/fm-cookie-session.svg
+[downloads-url]: https://npmjs.org/package/fm-cookie-session
 [gratipay-image]: https://img.shields.io/gratipay/dougwilson.svg
 [gratipay-url]: https://www.gratipay.com/dougwilson/
