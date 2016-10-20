@@ -4,7 +4,6 @@
 [![NPM Downloads][downloads-image]][downloads-url]
 [![Build Status][travis-image]][travis-url]
 [![Test Coverage][coveralls-image]][coveralls-url]
-[![Gratipay][gratipay-image]][gratipay-url]
 
   Simple cookie-based session middleware.
 
@@ -104,10 +103,10 @@ req.session = null
 ### Simple view counter example
 
 ```js
-var cookieSession = require('cookie-session')
-var express = require('express')
+const cookieSession = require('cookie-session')
+const express = require('express')
 
-var app = express()
+const app = express()
 
 app.set('trust proxy', 1) // trust first proxy
 
@@ -130,10 +129,10 @@ app.listen(3000)
 ## Per-user sticky max age
 
 ```js
-var cookieSession = require('cookie-session')
-var express = require('express')
+const cookieSession = require('cookie-session')
+const express = require('express')
 
-var app = express()
+const app = express()
 
 app.set('trust proxy', 1) // trust first proxy
 
@@ -190,5 +189,3 @@ move to an [alternative session strategy](https://github.com/expressjs/session#c
 [coveralls-url]: https://coveralls.io/r/fairmanager/fm-cookie-session?branch=master
 [downloads-image]: https://img.shields.io/npm/dm/fm-cookie-session.svg
 [downloads-url]: https://npmjs.org/package/fm-cookie-session
-[gratipay-image]: https://img.shields.io/gratipay/dougwilson.svg
-[gratipay-url]: https://www.gratipay.com/dougwilson/
