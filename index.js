@@ -2,26 +2,26 @@
  * cookie-session
  * Copyright(c) 2013 Jonathan Ong
  * Copyright(c) 2014-2015 Douglas Christopher Wilson
+ * Copyright(c) 2016 Oliver Salzburg
  * MIT Licensed
  */
 
-'use strict'
+"use strict";
 
 /**
  * Module dependencies.
  * @private
  */
-
-var debug = require('debug')('cookie-session');
-var Cookies = require('cookies');
-var onHeaders = require('on-headers');
+const debug     = require( "debug" )( "cookie-session" );
+const Cookies   = require( "cookies" );
+const onHeaders = require( "on-headers" );
 
 /**
  * Module exports.
  * @public
  */
 
-module.exports = cookieSession
+module.exports = cookieSession;
 
 /**
  * Create a new cookie session middleware.
@@ -37,86 +37,98 @@ module.exports = cookieSession
  * @public
  */
 
-function cookieSession(options) {
-  var opts = options || {}
+function cookieSession( options ) {
+	const opts = options || {};
 
-  // cookie name
-  var name = opts.name || 'session'
+	// Cookie name
+	const name = opts.name || "session";
 
-  // secrets
-  var keys = opts.keys;
-  if (!keys && opts.secret) keys = [opts.secret];
+	// Secrets
+	let keys = opts.keys;
+	if( !keys && opts.secret ) {
+		keys = [ opts.secret ];
+	}
 
-  // defaults
-  if (null == opts.overwrite) opts.overwrite = true;
-  if (null == opts.httpOnly) opts.httpOnly = true;
-  if (null == opts.signed) opts.signed = true;
+	// Defaults
+	if( null == opts.overwrite ) {
+		opts.overwrite = true;
+	}
+	if( null == opts.httpOnly ) {
+		opts.httpOnly = true;
+	}
+	if( null == opts.signed ) {
+		opts.signed = true;
+	}
 
-  if (!keys && opts.signed) throw new Error('.keys required.');
+	if( !keys && opts.signed ) {
+		throw new Error( ".keys required." );
+	}
 
-  debug('session options %j', opts);
+	debug( "session options %j", opts );
 
-  return function _cookieSession(req, res, next) {
-    var cookies = req.sessionCookies = new Cookies(req, res, {keys: keys});
-    var sess
+	return function _cookieSession( req, res, next ) {
+		const cookies = req.sessionCookies = new Cookies( req, res, {
+			keys : keys
+		} );
+		let sess;
 
-    // to pass to Session()
-    req.sessionOptions = Object.create(opts)
-    req.sessionKey = name
+		// To pass to Session()
+		req.sessionOptions = Object.create( opts );
+		req.sessionKey     = name;
 
-    req.__defineGetter__('session', function getSession() {
-      // already retrieved
-      if (sess) {
-        return sess
-      }
+		req.__defineGetter__( "session", function getSession() {
+			// Already retrieved
+			if( sess ) {
+				return sess;
+			}
 
-      // unset
-      if (sess === false) {
-        return null
-      }
+			// Unset
+			if( sess === false ) {
+				return null;
+			}
 
-      // get or create session
-      return (sess = tryGetSession(req) || createSession(req))
-    })
+			// Get or create session
+			return ( sess = tryGetSession( req ) || createSession( req ) );
+		} );
 
-    req.__defineSetter__('session', function setSession(val) {
-      if (val == null) {
-        // unset session
-        sess = false
-        return val
-      }
+		req.__defineSetter__( "session", function setSession( val ) {
+			if( val == null ) {
+				// Unset session
+				sess = false;
+				return val;
+			}
 
-      if (typeof val === 'object') {
-        // create a new session
-        sess = Session.create(this, val)
-        return sess
-      }
+			if( typeof val === "object" ) {
+				// Create a new session
+				sess = Session.create( this, val );
+				return sess;
+			}
 
-      throw new Error('req.session can only be set as null or an object.')
-    })
+			throw new Error( "req.session can only be set as null or an object." );
+		} );
 
-    onHeaders(res, function setHeaders() {
-      if (sess === undefined) {
-        // not accessed
-        return;
-      }
+		onHeaders( res, function setHeaders() {
+			if( sess === undefined ) {
+				// Not accessed
+				return;
+			}
 
-      try {
-        if (sess === false) {
-          // remove
-          cookies.set(name, '', req.sessionOptions)
-        } else if ((!sess.isNew || sess.isPopulated) && sess.isChanged) {
-          // save populated or non-new changed session
-          sess.save()
-        }
-      } catch (e) {
-        debug('error saving session %s', e.message)
-      }
-    });
+			try {
+				if( sess === false ) {
+					// Remove
+					cookies.set( name, "", req.sessionOptions );
+				} else if( ( !sess.isNew || sess.isPopulated ) && sess.isChanged ) {
+					// Save populated or non-new changed session
+					sess.save();
+				}
+			} catch( e ) {
+				debug( "error saving session %s", e.message );
+			}
+		} );
 
-    next();
-  }
-};
+		next();
+	};
+}
 
 /**
  * Session model.
@@ -126,120 +138,106 @@ function cookieSession(options) {
  * @private
  */
 
-function Session(ctx, obj) {
-  Object.defineProperty(this, '_ctx', {
-    value: ctx
-  })
+class Session {
+	constructor( ctx, obj ) {
+		Object.defineProperty( this, "_ctx", {
+			value : ctx
+		} );
 
-  if (obj) {
-    for (var key in obj) {
-      this[key] = obj[key]
-    }
-  }
-}
+		if( obj ) {
+			for( let key in obj ) {
+				this[ key ] = obj[ key ];
+			}
+		}
+	}
 
-/**
- * Create new session.
- * @private
- */
+	/**
+	 * Create new session.
+	 * @private
+	 */
+	static create( req, obj ) {
+		const ctx = new SessionContext( req );
+		return new Session( ctx, obj );
+	}
 
-Session.create = function create(req, obj) {
-  var ctx = new SessionContext(req)
-  return new Session(ctx, obj)
-}
+	/**
+	 * Create session from serialized form.
+	 * @private
+	 */
+	static deserialize( req, str ) {
+		const ctx = new SessionContext( req );
+		const obj = decode( str );
 
-/**
- * Create session from serialized form.
- * @private
- */
+		ctx._new = false;
+		ctx._val = str;
 
-Session.deserialize = function deserialize(req, str) {
-  var ctx = new SessionContext(req)
-  var obj = decode(str)
+		return new Session( ctx, obj );
+	}
 
-  ctx._new = false
-  ctx._val = str
+	/**
+	 * Serialize a session to a string.
+	 * @private
+	 */
+	static serialize( sess ) {
+		return encode( sess );
+	}
 
-  return new Session(ctx, obj)
-}
+	/**
+	 * Return if the session is changed for this request.
+	 *
+	 * @return {Boolean}
+	 * @public
+	 */
+	get isChanged() {
+		return this._ctx._new || this._ctx._val !== Session.serialize( this );
+	}
 
-/**
- * Serialize a session to a string.
- * @private
- */
+	/**
+	 * Return if the session is new for this request.
+	 *
+	 * @return {Boolean}
+	 * @public
+	 */
+	get isNew() {
+		return this._ctx._new;
+	}
 
-Session.serialize = function serialize(sess) {
-  return encode(sess)
-}
+	/**
+	 * Return how many values there are in the session object.
+	 * Used to see if it's "populated".
+	 *
+	 * @return {Number}
+	 * @public
+	 */
+	get length() {
+		return Object.keys( this ).length;
+	}
 
-/**
- * Return if the session is changed for this request.
- *
- * @return {Boolean}
- * @public
- */
+	/**
+	 * Populated flag, which is just a boolean alias of .length.
+	 *
+	 * @return {Boolean}
+	 * @public
+	 */
+	get isPopulated() {
+		return Boolean( this.length );
+	}
 
-Object.defineProperty(Session.prototype, 'isChanged', {
-  get: function getIsChanged() {
-    return this._ctx._new || this._ctx._val !== Session.serialize(this)
-  }
-})
+	/**
+	 * Save session changes by performing a Set-Cookie.
+	 * @private
+	 */
+	save() {
+		const ctx = this._ctx;
+		const val = Session.serialize( this );
 
-/**
- * Return if the session is new for this request.
- *
- * @return {Boolean}
- * @public
- */
+		const cookies = ctx.req.sessionCookies;
+		const name    = ctx.req.sessionKey;
+		const opts    = ctx.req.sessionOptions;
 
-Object.defineProperty(Session.prototype, 'isNew', {
-  get: function getIsNew() {
-    return this._ctx._new
-  }
-})
-
-/**
- * Return how many values there are in the session object.
- * Used to see if it's "populated".
- *
- * @return {Number}
- * @public
- */
-
-Object.defineProperty(Session.prototype, 'length', {
-  get: function getLength() {
-    return Object.keys(this).length
-  }
-})
-
-/**
- * populated flag, which is just a boolean alias of .length.
- *
- * @return {Boolean}
- * @public
- */
-
-Object.defineProperty(Session.prototype, 'isPopulated', {
-  get: function getIsPopulated() {
-    return Boolean(this.length)
-  }
-})
-
-/**
- * Save session changes by performing a Set-Cookie.
- * @private
- */
-
-Session.prototype.save = function save() {
-  var ctx = this._ctx
-  var val = Session.serialize(this)
-
-  var cookies = ctx.req.sessionCookies
-  var name = ctx.req.sessionKey
-  var opts = ctx.req.sessionOptions
-
-  debug('save %s', val)
-  cookies.set(name, val, opts)
+		debug( "save %s", val );
+		cookies.set( name, val, opts );
+	}
 }
 
 /**
@@ -249,11 +247,11 @@ Session.prototype.save = function save() {
  * @private
  */
 
-function SessionContext(req) {
-  this.req = req
+function SessionContext( req ) {
+	this.req = req;
 
-  this._new = true
-  this._val = undefined
+	this._new = true;
+	this._val = undefined;
 }
 
 /**
@@ -261,9 +259,9 @@ function SessionContext(req) {
  * @private
  */
 
-function createSession(req) {
-  debug('new session')
-  return Session.create(req)
+function createSession( req ) {
+	debug( "new session" );
+	return Session.create( req );
 }
 
 /**
@@ -274,9 +272,9 @@ function createSession(req) {
  * @private
  */
 
-function decode(string) {
-  var body = new Buffer(string, 'base64').toString('utf8');
-  return JSON.parse(body);
+function decode( string ) {
+	const body = new Buffer( string, "base64" ).toString( "utf8" );
+	return JSON.parse( body );
 }
 
 /**
@@ -287,9 +285,9 @@ function decode(string) {
  * @private
  */
 
-function encode(body) {
-  var str = JSON.stringify(body)
-  return new Buffer(str).toString('base64')
+function encode( body ) {
+	const str = JSON.stringify( body );
+	return new Buffer( str ).toString( "base64" );
 }
 
 /**
@@ -297,23 +295,25 @@ function encode(body) {
  * @private
  */
 
-function tryGetSession(req) {
-  var cookies = req.sessionCookies
-  var name = req.sessionKey
-  var opts = req.sessionOptions
+function tryGetSession( req ) {
+	const cookies = req.sessionCookies;
+	const name    = req.sessionKey;
+	const opts    = req.sessionOptions;
 
-  var str = cookies.get(name, opts)
+	const str = cookies.get( name, opts );
 
-  if (!str) {
-    return undefined
-  }
+	if( !str ) {
+		return undefined;
+	}
 
-  debug('parse %s', str)
+	debug( "parse %s", str );
 
-  try {
-    return Session.deserialize(req, str)
-  } catch (err) {
-    if (!(err instanceof SyntaxError)) throw err
-    return undefined
-  }
+	try {
+		return Session.deserialize( req, str );
+	} catch( err ) {
+		if( !( err instanceof SyntaxError ) ) {
+			throw err;
+		}
+		return undefined;
+	}
 }
