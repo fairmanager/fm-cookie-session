@@ -1,10 +1,11 @@
 {
-  "name": "cookie-session",
+  "name": "fm-cookie-session",
   "description": "cookie session middleware",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0",
   "contributors": [
     "Douglas Christopher Wilson <doug@somethingdoug.com>",
-    "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)"
+    "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)",
+    "Oliver Salzburg <oliver.salzburg@gmail.com>"
   ],
   "license": "MIT",
   "keywords": [
@@ -20,10 +21,10 @@
     "on-headers": "~1.0.1"
   },
   "devDependencies": {
-    "connect": "3.4.1",
-    "istanbul": "0.4.2",
-    "mocha": "2.4.5",
-    "supertest": "1.1.0"
+    "connect": "3.5.0",
+    "istanbul": "0.4.5",
+    "mocha": "3.1.2",
+    "supertest": "2.0.1"
   },
   "files": [
     "HISTORY.md",
