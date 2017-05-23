@@ -8,6 +8,7 @@
 # Visual Studio solutions like to switch to CRLF at times
 *.sln text eol=crlf
 
+*.aar binary
 *.ai binary
 *.aiff binary
 *.dll binary

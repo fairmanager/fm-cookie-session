@@ -3,5 +3,6 @@
 	"editor.tabSize": 4,
 	"editor.insertSpaces": false,
 	"editor.detectIndentation": true,
-	"editor.trimAutoWhitespace": true
+	"editor.trimAutoWhitespace": true,
+	"files.eol" : "\n"
 }
