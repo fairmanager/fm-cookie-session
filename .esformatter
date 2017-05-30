@@ -471,6 +471,15 @@
 			"WhileStatementOpeningBrace": 1
 		}
 	},
+	"align": {
+		"ObjectExpression": 0,
+		"VariableDeclaration": 1,
+		"AssignmentExpression": 1,
+		"TernaryExpression": 0,
+		"OrExpression": 0,
+		"SpreadAlignment": "key",
+		"ShorthandAlignment": "key"
+	},
 	"plugins": [
 		"esformatter-align",
 		"esformatter-braces",

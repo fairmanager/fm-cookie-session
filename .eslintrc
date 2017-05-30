@@ -329,8 +329,7 @@
 			{
 				"beforeColon": true,
 				"afterColon": true,
-				"mode": "strict",
-				"align": "colon"
+				"mode": "minimum"
 			}
 		],
 		// enforce consistent spacing before and after keywords
