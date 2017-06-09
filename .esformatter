@@ -361,8 +361,8 @@
 			"VariableName": 1,
 			"VariableValue": 1,
 			"WhileStatementClosingBrace": 1,
-			"WhileStatementConditionalClosing": 0,
-			"WhileStatementConditionalOpening": 1,
+			"WhileStatementConditionalClosing": 1,
+			"WhileStatementConditionalOpening": 0,
 			"WhileStatementOpeningBrace": 1
 		},
 		"after": {
@@ -467,7 +467,7 @@
 			"VariableValue": 0,
 			"WhileStatementClosingBrace": 1,
 			"WhileStatementConditionalClosing": 1,
-			"WhileStatementConditionalOpening": 0,
+			"WhileStatementConditionalOpening": 1,
 			"WhileStatementOpeningBrace": 1
 		}
 	},
