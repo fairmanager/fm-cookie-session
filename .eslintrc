@@ -343,8 +343,16 @@
 						"before": false,
 						"after": true
 					},
+					"const": {
+						"before": false,
+						"after": true
+					},
 					"else": {
 						"before": true,
+						"after": true
+					},
+					"let": {
+						"before": false,
 						"after": true
 					},
 					"return": {
