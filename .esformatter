@@ -445,7 +445,7 @@
 			"ModuleSpecifierClosingBrace": 0,
 			"ModuleSpecifierComma": 1,
 			"ModuleSpecifierOpeningBrace": 1,
-			"ObjectExpressionClosingBrace": 1,
+			"ObjectExpressionClosingBrace": 0,
 			"ObjectExpressionOpeningBrace": 0,
 			"ObjectPatternClosingBrace": 1,
 			"ObjectPatternComma": 1,

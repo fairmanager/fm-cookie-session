@@ -21,7 +21,7 @@
 			}
 		],
 		// disallow unnecessary parentheses
-		"no-extra-parens": 2,
+		"no-extra-parens": 0,
 		// disallow calling some Object.prototype methods directly on objects
 		"no-prototype-builtins": 2,
 		// disallow template literal placeholder syntax in regular strings
@@ -344,6 +344,10 @@
 						"after": true
 					},
 					"const": {
+						"before": false,
+						"after": true
+					},
+					"do": {
 						"before": false,
 						"after": true
 					},
