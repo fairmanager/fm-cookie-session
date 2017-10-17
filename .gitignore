@@ -10,3 +10,4 @@ node_modules/
 
 # Code coverage
 coverage/
+package-lock.json
