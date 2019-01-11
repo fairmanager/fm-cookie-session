@@ -42,5 +42,8 @@
     "test": "mocha --check-leaks --reporter spec --bail test/",
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --check-leaks --reporter dot test/",
     "test-travis": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --check-leaks --reporter spec test/"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   }
 }
