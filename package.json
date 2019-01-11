@@ -16,9 +16,9 @@
   ],
   "repository": "fairmanager/fm-cookie-session",
   "dependencies": {
-    "cookies": "0.6.1",
-    "debug": "~2.2.0",
-    "on-headers": "~1.0.1"
+    "cookies": "0.7.3",
+    "debug": "4.1.1",
+    "on-headers": "1.0.1"
   },
   "devDependencies": {
     "connect": "3.5.0",
