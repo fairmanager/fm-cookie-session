@@ -273,7 +273,7 @@ function createSession( req ) {
  */
 
 function decode( string ) {
-	const body = new Buffer( string, "base64" ).toString( "utf8" );
+	const body = Buffer.from( string, "base64" ).toString( "utf8" );
 	return JSON.parse( body );
 }
 
@@ -287,7 +287,7 @@ function decode( string ) {
 
 function encode( body ) {
 	const str = JSON.stringify( body );
-	return new Buffer( str ).toString( "base64" );
+	return Buffer.from( str ).toString( "base64" );
 }
 
 /**
